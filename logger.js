@@ -1,10 +1,6 @@
-import { serve } from 'https://deno.land/std/http/server.ts';
+import { serve } from 'https://deno.land/std@0.171.0/http/server.ts'
 
-const server = serve({ port: 3000 });
-
-console.log('Logger app is running on port 3000');
-
-for await (const request of server) {
+const handleRequest = async (request) => {
   const { method, url, headers } = request;
   const body = new Uint8Array(await Deno.readAll(request.body));
 
@@ -16,3 +12,5 @@ for await (const request of server) {
 
   request.respond({ body: 'Request logged successfully\n' });
 }
+
+serve(handleRequest, { port: 3000 })
